@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
-from api.endpoints import students, courses
+from app.api.v1.endpoints import students
+from app.api.v1.endpoints import courses
 
 api_router = APIRouter(prefix="/api")
 
