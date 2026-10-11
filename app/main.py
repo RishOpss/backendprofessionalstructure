@@ -1,8 +1,16 @@
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
-from app.api.v1.router import api_router
 
-app = FastAPI()
+from fastapi import FastAPI
+from api.v1.router import api_router
+
+from fastapi.responses import HTMLResponse
+
+app = FastAPI(
+    title="Course and Student API",
+    description="API for managing courses and students",
+    version="1.0.0"
+)
+
+# Register all API routes
 app.include_router(api_router)
 
 @app.get("/", response_class=HTMLResponse)
@@ -20,3 +28,7 @@ def home():
     </body>
     </html>
     """
+
+@app.get("/health", tags=["Health"])
+def health_check():
+    return {"status": "healthy"}
