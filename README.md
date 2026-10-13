@@ -33,16 +33,16 @@ Items marked *(planned)* are part of the target structure and are added as the p
 
 ## Why This Structure?
 
-| Layer                          | Responsibility                                                    | Should NOT                            |
-| ------------------------------ | ----------------------------------------------------------------- | ------------------------------------- |
-| **`main.py`**          | Build the app, register routers and middleware                    | Contain business logic                |
-| **`api/v1/endpoints`** | Parse requests, call a service, return responses and status codes | Talk to the database directly         |
-| **`schemas`**          | Define and validate the shape of input and output data            | Contain logic                         |
+| Layer                  | Responsibility                                                    | Should NOT                          |
+| ---------------------- | ----------------------------------------------------------------- | ----------------------------------- |
+| **`main.py`**          | Build the app, register routers and middleware                    | Contain business logic              |
+| **`api/v1/endpoints`** | Parse requests, call a service, return responses and status codes | Talk to the database directly       |
+| **`schemas`**          | Define and validate the shape of input and output data            | Contain logic                       |
 | **`services`**         | Implement business rules (e.g. "a student can't enrol twice")     | Know about HTTP or`Request` objects |
-| **`repositories`**     | Run queries against Supabase/Postgres                             | Contain business rules                |
-| **`dependencies`**     | Share cross-cutting inputs (auth user, DB client) via`Depends`  | Hold state                            |
-| **`core`**             | Config, logging, exceptions: things the whole app uses            | Depend on other app layers            |
-| **`middleware`**       | Process every request/response (CORS, timing, logging)            | Handle one specific route             |
+| **`repositories`**     | Run queries against Supabase/Postgres                             | Contain business rules              |
+| **`dependencies`**     | Share cross-cutting inputs (auth user, DB client) via`Depends`    | Hold state                          |
+| **`core`**             | Config, logging, exceptions: things the whole app uses            | Depend on other app layers          |
+| **`middleware`**       | Process every request/response (CORS, timing, logging)            | Handle one specific route           |
 
 ### Request flow
 
@@ -65,8 +65,8 @@ Each layer only talks to the one directly below it, which gives you:
 
 All routes are mounted under `/api` (see `app/api/v1/router.py`):
 
-| Prefix            | Tag      | Defined in                           |
-| ----------------- | -------- | ------------------------------------ |
+| Prefix          | Tag      | Defined in                         |
+| --------------- | -------- | ---------------------------------- |
 | `/api/students` | students | `app/api/v1/endpoints/students.py` |
 | `/api/courses`  | courses  | `app/api/v1/endpoints/courses.py`  |
 
