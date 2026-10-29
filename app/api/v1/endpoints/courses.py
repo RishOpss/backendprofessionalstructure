@@ -1,11 +1,9 @@
 from fastapi import APIRouter
-from repository import courses_repository
+from schemas.course import Course
 from services import course_service
 
 router = APIRouter(prefix="/courses", tags=["courses"])
 
-@router.get("/")
+@router.get("/", response_model=list[Course])
 def get_courses():
-    # Logic to retrieve courses from the database
     return course_service.get_courses()
-
