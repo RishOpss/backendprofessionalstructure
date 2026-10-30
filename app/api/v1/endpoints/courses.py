@@ -11,8 +11,6 @@ def get_courses():
 @router.get("/{course_id}", response_model=Course)
 def get_course_by_id(course_id: int):
     course = course_service.get_course_by_id(course_id)
-    if not course:
-        raise HTTPException(status_code=404, detail="Course not found")
     return course
 
 @router.post("/", response_model=Course)
