@@ -9,6 +9,7 @@ wheels/
 # Virtual environments
 .venv
 .vscode
+.claude
 # Environment variables
 .env
 .env.*
