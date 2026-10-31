@@ -1,8 +1,10 @@
 
-from fastapi import FastAPI
+from fastapi import FastAPI , Request
 from api.v1.router import api_router
-
+import time
 from fastapi.responses import HTMLResponse
+from starlette.middleware.base import BaseHTTPMiddleware
+from middleware.timing import add_process_time_header
 
 app = FastAPI(
     title="Course and Student API",
@@ -10,8 +12,10 @@ app = FastAPI(
     version="1.0.0"
 )
 
+app.add_middleware(BaseHTTPMiddleware, dispatch=add_process_time_header)
 # Register all API routes
 app.include_router(api_router)
+
 
 @app.get("/", response_class=HTMLResponse)
 def home():
