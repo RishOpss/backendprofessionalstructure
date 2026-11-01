@@ -5,7 +5,6 @@ import time
 from fastapi.responses import HTMLResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from middleware.timing import add_process_time_header
-# test
 app = FastAPI(
     title="Course and Student API",
     description="API for managing courses and students",
