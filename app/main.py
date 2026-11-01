@@ -5,11 +5,27 @@ import time
 from fastapi.responses import HTMLResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from middleware.timing import add_process_time_header
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("app.log"),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger("fastapi_application")
+
 app = FastAPI(
     title="Course and Student API",
     description="API for managing courses and students",
     version="1.0.0"
 )
+
+logger.info("FastAPI application started")
 
 app.add_middleware(BaseHTTPMiddleware, dispatch=add_process_time_header)
 # Register all API routes
@@ -18,6 +34,7 @@ app.include_router(api_router)
 
 @app.get("/", response_class=HTMLResponse)
 def home():
+    logger.info("Home page accessed")
     return """
     <!DOCTYPE html>
     <html>
@@ -34,4 +51,5 @@ def home():
 
 @app.get("/health", tags=["Health"])
 def health_check():
+    logger.info("Health check endpoint accessed")
     return {"status": "healthy"}
