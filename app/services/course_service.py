@@ -10,7 +10,7 @@ def get_courses(db):
     logger.info("Fetching all courses")
     return courses_repository.get_all(db)
 
-def get_course_by_id(course_id: int,db):
+def get_course_by_id(db,course_id: int):
     logger.info(f"Fetching course with ID: {course_id}")
     try:
         course =  courses_repository.get_by_id(db,course_id)
@@ -24,6 +24,6 @@ def get_course_by_id(course_id: int,db):
     except HTTPException:
         raise
 
-def create_course(course: Course,db):
+def create_course(db,course: Course):
     logger.info("Creating new course")
     return courses_repository.create(db,course)
