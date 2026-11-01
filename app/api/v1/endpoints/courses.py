@@ -15,5 +15,17 @@ async def get_course_by_id(course_id: int,db= Depends(get_db)):
     return course
 
 @router.post("/", response_model=Course)
-async def create_course(course: Course,db= Depends(get_db)):
-    return await course_service.create_course(db,course)
+def create_course(course: Course, background_tasks: BackgroundTasks, db= Depends(get_db)):
+    created_course = course_service.create_course(db, course)
+
+    # Hardcoded administrator email
+    admin_email = "rishabh.raj@example.com"
+
+    # Register background task
+    background_tasks.add_task(
+        send_course_creation_email,
+        created_course["name"],
+        admin_email
+    )
+
+    return created_course
