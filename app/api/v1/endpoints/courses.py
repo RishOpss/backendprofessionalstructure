@@ -1,4 +1,4 @@
-from fastapi import APIRouter , Depends , BackgroundTasks
+from fastapi import APIRouter , Depends ,BackgroundTasks
 from schemas.course import Course
 from services import course_service
 from dependencies.db import get_db
@@ -15,21 +15,16 @@ async def get_course_by_id(course_id: int,db= Depends(get_db)):
     return course
 
 @router.post("/", response_model=Course)
-async def create_course(course: Course, background_tasks: BackgroundTasks, db= Depends(get_db)):
-    created_course = await course_service.create_course(db, course)
-
-    # Hardcoded administrator email
-    admin_email = "rishabh.raj@example.com"
-
-    # Register background task
-    background_tasks.add_task(
+async def create_course(course: Course,background_task:BackgroundTasks, db= Depends(get_db)):
+    
+    create_course = await course_service.create_course(db, course)
+    admin_email ="rishabh@gmail.com"
+    background_task.add_task(
         send_course_creation_email,
-        created_course["name"],
+        create_course["name"],
         admin_email
     )
-
-    return created_course
-
+    return create_course
 @router.delete("/{course_id}")
 async def delete_course(course_id: int, db= Depends(get_db)):
     deleted_course = await course_service.delete_course(db, course_id)
