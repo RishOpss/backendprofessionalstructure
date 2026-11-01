@@ -10,5 +10,9 @@ async def get_by_id(course_id: int,db):
     return response.data[0] if response.data else None
 
 async def create(db,course: Course):
-    response = db.table("courses").insert(course.dict()).execute()
+    response = db.table("courses").insert(course.model_dump()).execute()
     return response.data[0]
+
+async def delete(db, course_id: int):
+    response = db.table("courses").delete().eq("course_id", course_id).execute()
+    return response.data[0] if response.data else None
