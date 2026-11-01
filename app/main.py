@@ -5,17 +5,11 @@ import time
 from fastapi.responses import HTMLResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from middleware.timing import add_process_time_header
+from core.logging import setup_logging
 import logging
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler("app.log"),
-        logging.StreamHandler()
-    ]
-)
+setup_logging()
 
 logger = logging.getLogger("fastapi_application")
 
