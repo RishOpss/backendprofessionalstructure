@@ -33,7 +33,7 @@ app.include_router(api_router)
 
 
 @app.get("/", response_class=HTMLResponse)
-def home():
+async def home():
     logger.info("Home page accessed")
     return """
     <!DOCTYPE html>
@@ -50,6 +50,6 @@ def home():
     """
 
 @app.get("/health", tags=["Health"])
-def health_check():
+async def health_check():
     logger.info("Health check endpoint accessed")
     return {"status": "healthy"}
