@@ -11,7 +11,7 @@ import logging
 # Configure logging
 setup_logging()
 
-logger = logging.getLogger("fastapi_application")
+logger = logging.getLogger("fastapi_main_application")
 
 app = FastAPI(
     title="Course and Student API",
