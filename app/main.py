@@ -1,28 +1,50 @@
 
-from fastapi import FastAPI , Request
-from api.v1.router import api_router
-import time
-from fastapi.responses import HTMLResponse
-from starlette.middleware.base import BaseHTTPMiddleware
-from middleware.timing import add_process_time_header
-from core.logging import setup_logging
+from contextlib import asynccontextmanager
 import logging
 
-# Configure logging
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
+from starlette.middleware.base import BaseHTTPMiddleware
+
+from api.v1.router import api_router
+from middleware.timing import add_process_time_header
+from core.logging import setup_logging
+
+
+# Configure logging once during module initialization
 setup_logging()
 
-logger = logging.getLogger("fastapi_application")
+logger = logging.getLogger("course_student_api")
+
+
+# Application lifecycle manager
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # STARTUP: Runs before the application starts accepting requests
+    logger.info("Application startup: initializing resources.")
+
+    try:
+        yield
+
+    finally:
+        # SHUTDOWN: Runs when the application shuts down gracefully
+        logger.info("Application shutdown: cleaning up resources.")
+
 
 app = FastAPI(
     title="Course and Student API",
     description="API for managing courses and students",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
-setup_logging()
 
-logger.info("Fast API application has started.")
-app.add_middleware(BaseHTTPMiddleware, dispatch=add_process_time_header)
+# Register middleware
+app.add_middleware(
+    BaseHTTPMiddleware,
+    dispatch=add_process_time_header
+)
+
 # Register all API routes
 app.include_router(api_router)
 
@@ -43,6 +65,7 @@ async def home():
     </body>
     </html>
     """
+
 
 @app.get("/health", tags=["Health"])
 async def health_check():
