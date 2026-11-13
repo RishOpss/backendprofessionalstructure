@@ -19,16 +19,18 @@ app = FastAPI(
     version="1.0.0"
 )
 
-logger.info("FastAPI application started")
+setup_logging()
 
+logger = logging.getLogger("course_student_api")
+logger.info("Fast API application has started.")
 app.add_middleware(BaseHTTPMiddleware, dispatch=add_process_time_header)
 # Register all API routes
 app.include_router(api_router)
 
 
 @app.get("/", response_class=HTMLResponse)
-def home():
-    logger.info("Home page accessed")
+async def home():
+    logger.info("Home endpoint accessed.")
     return """
     <!DOCTYPE html>
     <html>
@@ -44,6 +46,6 @@ def home():
     """
 
 @app.get("/health", tags=["Health"])
-def health_check():
-    logger.info("Health check endpoint accessed")
+async def health_check():
+    logger.info("Health check endpoint accessed.")
     return {"status": "healthy"}

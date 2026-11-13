@@ -13,8 +13,9 @@ def get_courses(db):
 def get_course_by_id(db,course_id: int):
     logger.info(f"Fetching course with ID: {course_id}")
     try:
-        course =  courses_repository.get_by_id(db,course_id)
+        course = await courses_repository.get_by_id(course_id, db)
         if not course:
+            logger.info(f"Course not found of id {course_id}")
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Course not found"
