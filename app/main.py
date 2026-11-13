@@ -21,7 +21,6 @@ app = FastAPI(
 
 setup_logging()
 
-logger = logging.getLogger("course_student_api")
 logger.info("Fast API application has started.")
 app.add_middleware(BaseHTTPMiddleware, dispatch=add_process_time_header)
 # Register all API routes
