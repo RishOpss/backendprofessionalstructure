@@ -5,8 +5,13 @@ import time
 from fastapi.responses import HTMLResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from middleware.timing import add_process_time_header
-import logging
 from core.logging import setup_logging
+import logging
+
+# Configure logging
+setup_logging()
+
+logger = logging.getLogger("fastapi_application")
 
 app = FastAPI(
     title="Course and Student API",
