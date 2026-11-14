@@ -19,7 +19,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-setup_logging()
 
 logger = logging.getLogger("course_student_api")
 logger.info("Fast API application has started.")
