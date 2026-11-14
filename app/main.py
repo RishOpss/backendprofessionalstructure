@@ -1,4 +1,4 @@
-
+from contextlib import asynccontextmanager
 from fastapi import FastAPI , Request
 from api.v1.router import api_router
 import time
@@ -13,10 +13,19 @@ setup_logging()
 
 logger = logging.getLogger("fastapi_application")
 
+@asynccontextmanager
+async def lifespan(app :FastAPI):
+    # Startup Phase
+    logging.info("APPLication Startup ")
+    yield # Running Phase
+    time.sleep(10)
+    logging.info("Application Stopped closing the connection")
+    
 app = FastAPI(
     title="Course and Student API",
     description="API for managing courses and students",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 
