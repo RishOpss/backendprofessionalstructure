@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI , Request
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from api.v1.router import api_router
 import time
 from fastapi.responses import HTMLResponse
@@ -32,6 +33,14 @@ app = FastAPI(
 logger = logging.getLogger("course_student_api")
 logger.info("Fast API application has started.")
 app.add_middleware(BaseHTTPMiddleware, dispatch=add_process_time_header)
+# CORS - allow requests from the frontend dev server
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Register all API routes
 app.include_router(api_router)
 
